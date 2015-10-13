@@ -1,0 +1,28 @@
+<configuration>
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{26}: %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <if condition='isDefined("loggly.token")'>
+        <then>
+            <appender name="loggly" class="ch.qos.logback.ext.loggly.LogglyAppender">
+                <endpointUrl>https://logs-01.loggly.com/inputs/${loggly.token}/tag/${loggly.tag:-ScaleDownSolrCloud}</endpointUrl>
+                <pattern>%d{"ISO8601", UTC}  %p %t %c{0}.%M - %m%n</pattern>
+            </appender>
+            <appender name="asyncLoggly" class="ch.qos.logback.classic.AsyncAppender">
+                <appender-ref ref="loggly" />
+            </appender>
+            <root level="info">
+                <appender-ref ref="asyncLoggly" />
+            </root>
+        </then>
+    </if>
+
+    <logger name="org.apache.zookeeper.ClientCnxn" level="info" />
+
+    <root level="debug">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>
