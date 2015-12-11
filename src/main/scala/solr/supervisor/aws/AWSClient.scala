@@ -3,20 +3,18 @@ package solr.supervisor.aws
 import com.amazonaws.services.autoscaling.AmazonAutoScalingClient
 import com.amazonaws.services.ec2.AmazonEC2Client
 
-/**
- * Created by ren on 10/13/15.
- */
 trait AWSClient {
+  val region: String
 
   lazy val ec2 = {
     val client = new AmazonEC2Client()
-    client.setEndpoint("ec2.us-west-1.amazonaws.com")
+    client.setEndpoint(s"ec2.$region.amazonaws.com")
     client
   }
 
   lazy val as = {
     val client = new AmazonAutoScalingClient()
-    client.setEndpoint("autoscaling.us-west-1.amazonaws.com")
+    client.setEndpoint(s"autoscaling.$region.amazonaws.com")
     client
   }
 }

@@ -6,9 +6,6 @@ import org.apache.curator.retry.ExponentialBackoffRetry
 
 import scala.collection.JavaConversions._
 
-/**
- * Created by ren on 10/13/15.
- */
 case class ZooKeeper(solrZk: String) {
   lazy val client = {
     val retryPolicy = new ExponentialBackoffRetry(1000, 3)
